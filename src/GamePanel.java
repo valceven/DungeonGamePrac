@@ -18,6 +18,8 @@ public class GamePanel extends JPanel implements Runnable{
     int  defaultSpeed = 4;
     int FPS = 60;
 
+    Player player = new Player(this,keyH);
+
     public GamePanel(){
 
         this.setPreferredSize(new Dimension(screenWidth,screenHeight));
@@ -63,18 +65,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     public void update(){
 
-        if(keyH.up){
-            defaultY -= defaultSpeed;
-        }
-        else if(keyH.down){
-            defaultY += defaultSpeed;
-        }
-        else if(keyH.left){
-            defaultX -= defaultSpeed;
-        }
-        else if(keyH.right){
-            defaultX += defaultSpeed;
-        }
+        player.update();
     }
 
     public void paintComponent(Graphics g){
@@ -83,9 +74,7 @@ public class GamePanel extends JPanel implements Runnable{
 
         Graphics2D graphics = (Graphics2D)g;
 
-        graphics.setColor(Color.white);
-
-        graphics.fillOval(defaultX,defaultY,tileSize, tileSize);
+        player.draw(graphics);
 
         graphics.dispose();
     }
