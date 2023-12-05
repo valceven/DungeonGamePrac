@@ -7,27 +7,30 @@ public class Player extends Entity{
 
     GamePanel gamePanel;
     KeyHandler keyH;
+    public final int screenX;
+    public final int screenY;
 
     public Player(GamePanel gamePanel,KeyHandler keyH){
         this.gamePanel = gamePanel;
         this.keyH = keyH;
-
+        screenX = gamePanel.screenWidth/2 - (gamePanel.tileSize/2);
+        screenY = gamePanel.screenWidth/2 - (gamePanel.tileSize/2);
         setDefaultValues();
         getPlayerImage();
     }
 
     public void setDefaultValues(){
-        x = 100;
-        y = 100;
-        speed = 4;
+        worldX = 100;
+        worldY = 100;
+        speed = 2;
         direction = "right";
     }
 
     public void getPlayerImage(){
 
         try{
-            knightLeft = ImageIO.read(getClass().getResourceAsStream("/player/knight-left.jpg"));
-            knightRight = ImageIO.read(getClass().getResourceAsStream("/player/knight-right.jpg"));
+            knightLeft = ImageIO.read(getClass().getResourceAsStream("/player/knight-left.png"));
+            knightRight = ImageIO.read(getClass().getResourceAsStream("/player/knight-right.png"));
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -35,17 +38,17 @@ public class Player extends Entity{
     public void update(){
 
         if(keyH.up){
-            y -= speed;
+            worldY -= speed;
         }
         else if(keyH.down){
-            y += speed;
+            worldY += speed;
         }
         else if(keyH.left){
-            x -= speed;
+            worldX -= speed;
             direction = "left";
         }
         else if(keyH.right){
-            x += speed;
+            worldY += speed;
             direction = "right";
         }
 
@@ -58,6 +61,6 @@ public class Player extends Entity{
             default -> null;
         };
 
-        graphics.drawImage(image, x, y, gamePanel.tileSize,gamePanel.tileSize, null);
+        graphics.drawImage(image, screenX, screenY, gamePanel.tileSize,gamePanel.tileSize, null);
     }
 }
