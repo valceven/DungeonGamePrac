@@ -20,17 +20,22 @@ public class Player extends Entity{
     }
 
     public void setDefaultValues(){
-        worldX = 100;
-        worldY = 100;
-        speed = 2;
-        direction = "right";
+        worldX = gamePanel.tileSize * 23;
+        worldY = gamePanel.tileSize * 21;
+        speed = 3;
+        direction = "down";
     }
 
     public void getPlayerImage(){
 
         try{
-            knightLeft = ImageIO.read(getClass().getResourceAsStream("/player/knight-left.png"));
-            knightRight = ImageIO.read(getClass().getResourceAsStream("/player/knight-right.png"));
+            for(int i = 1; i < 8; i++){
+                knightLeft[i - 1] = ImageIO.read(getClass().getResourceAsStream("/player/player_left" + i + ".png"));
+                knightRight[i - 1] = ImageIO.read(getClass().getResourceAsStream("/player/player_right" + i + ".png"));
+                knightUp[i - 1] = ImageIO.read(getClass().getResourceAsStream("/player/player_up" + i + ".png"));
+                knightDown[i - 1] = ImageIO.read(getClass().getResourceAsStream("/player/player_down" + i + ".png"));
+            }
+
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -39,28 +44,42 @@ public class Player extends Entity{
 
         if(keyH.up){
             worldY -= speed;
+            direction = "up";
         }
         else if(keyH.down){
             worldY += speed;
+            direction = "down";
         }
         else if(keyH.left){
             worldX -= speed;
             direction = "left";
         }
         else if(keyH.right){
-            worldY += speed;
+            worldX += speed;
             direction = "right";
+        }else{
+
         }
 
+        spriteCounter += 1;
+
+        if(spriteCounter > 8){
+            spriteNum++;
+            if(spriteNum >= 7){
+                spriteNum = 1;
+            }
+            spriteCounter = 0;
+        }
     }
-    public void draw(Graphics2D graphics){
+    public void draw(Graphics2D graphics) {
 
         BufferedImage image = switch (direction) {
-            case "left" -> knightLeft;
-            case "right" -> knightRight;
-            default -> null;
+            case "left" -> knightLeft[spriteNum];
+            case "right" -> knightRight[spriteNum];
+            case "up" -> knightUp[spriteNum];
+            case "down" -> knightDown[spriteNum];
+                default -> null;
         };
-
         graphics.drawImage(image, screenX, screenY, gamePanel.tileSize,gamePanel.tileSize, null);
     }
 }
